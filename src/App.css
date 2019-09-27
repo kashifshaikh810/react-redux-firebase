@@ -1,22 +1,26 @@
-.App {
-  text-align: center;
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  /* background-image: url(/public/img/kashif.bg.png) no-repeat; */
+  background-size: 100%;
+   background-position: bottom; 
+  background-color: #95e8f3;
 }
 
-.App-logo {
-  height: 40vmin;
+form{
+  padding: 20px;
+  margin: 60px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+form button, form h5{
+  margin: 20px 0;
 }
 
-.App-link {
-  color: #09d3ac;
+input[type=text]:not(.browser-default):focus:not([readonly]),
+input[type=email]:not(.browser-default):focus:not([readonly]),
+input[type=password]:not(.browser-default):focus:not([readonly]),
+textarea.materialize-textarea:focus:not([readonly]){
+  border-color: #ec407a;
+  box-shadow: none;
 }
