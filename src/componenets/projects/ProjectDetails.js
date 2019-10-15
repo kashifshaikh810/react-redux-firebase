@@ -1,23 +1,53 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { firestoreConnect } from 'react-redux-firebase';
+import { compose } from 'redux';
+import { Redirect } from 'react-router-dom';
 
 const ProjectDetails = (props) => {
-    const id = props.match.params.id;
-    return(
+    const { project, auth } = props;
+        if(!auth.uid) return <Redirect to='/signin' />
+
+    if (project) {
+        return(
         <div className="container section project-details">
             <div className="card z-depth-0">
                 <div className="card-content">
-                    <span className="card-title"> Project Title - {id} </span>
-                    <p> We present here the results of a study focused on text reading in a car. The purpose of this work is to explore how machine synthesized reading is perceived by users. Are the users willing to tolerate deficiencies of machine synthesized speech and trade it off for more current content? </p>
+                    <span className="card-title"> {project.title} </span>
+                    <p> {project.Content} </p>
                 </div>
                 <hr />
-                <br />
+                <br />    
                 <div className="div-action.gret.lighten-4 grey-text">
-                    <div> Posted by the Kashif Sheikh </div>
+                    <div> Posted by the {project && project.author && project.author.FirstName} {project && project.author && project.author.LastName}  </div>
                     <div> 2nd september, 2am </div>
                 </div>
             </div>
         </div>
-    )
+        )
+    } else {
+        return (
+            <div className="container center" >
+                <p> loading project... </p>
+            </div>
+        )
+    }
 }
 
-export default ProjectDetails;
+const mapStateToprops = (state, ownProps) => {
+    // console.log(state);
+    const id = ownProps.match.params.id;
+    const projects = state.firestore.data.projects;
+    const project = projects ? projects[id] : null
+    return {
+        project: project,
+        auth: state.firebase.auth
+    }
+}
+
+export default compose(
+    connect(mapStateToprops),
+    firestoreConnect([
+        { collection: 'projects' }
+    ])
+)(ProjectDetails);
